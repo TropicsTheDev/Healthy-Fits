@@ -94,7 +94,6 @@ export default {
       description: "These are the best shoes!",
     });
 
-
     function handleImage(event) {
       const { value } = event.target;
       state.image = value;
