@@ -1,29 +1,27 @@
 <template>
-  <apollo-query :query="ALL_PRODUCTS_QUERY">
-    <template #default="{ result: { loading, error, data } }">
-      <!-- Loading -->
-      <p v-if="loading">Loading...</p>
+  <!-- Loading -->
+  <p v-if="loading">Loading...</p>
 
-      <!-- Error -->
-      <p v-else-if="error">An error occurred</p>
+  <!-- Error -->
+  <p v-else-if="error">An error occurred</p>
 
-      <!-- Result -->
-      <div v-else-if="data" class="product-list">
-        <Product
-          v-for="product in data.allProducts"
-          :key="product.id"
-          :product="product"
-        />
-      </div>
+  <!-- Result -->
+  <div v-else-if="result" class="product-list">
+    <Product
+      v-for="product in result.allProducts"
+      :key="product.id"
+      :product="product"
+    />
+  </div>
 
-      <!-- No result -->
-      <p v-else class="no-result apollo">No result :(</p>
-    </template>
-  </apollo-query>
+  <!-- No result -->
+  <p v-else class="no-result apollo">No result :(</p>
 </template>
 
 <script>
+import { useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
+
 export const ALL_PRODUCTS_QUERY = gql`
   query ALL_PRODUCTS_QUERY {
     allProducts {
@@ -43,8 +41,11 @@ export const ALL_PRODUCTS_QUERY = gql`
 
 export default {
   setup() {
+    const { result, loading, error } = useQuery(ALL_PRODUCTS_QUERY);
     return {
-      ALL_PRODUCTS_QUERY,
+      result,
+      loading,
+      error,
     };
   },
 };

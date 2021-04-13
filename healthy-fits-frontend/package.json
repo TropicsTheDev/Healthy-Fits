@@ -12,8 +12,8 @@
   },
   "dependencies": {
     "@nuxtjs/apollo": "^4.0.1-rc.5",
-    "@nuxtjs/composition-api": "^0.22.4",
-    "@vue/apollo-composable": "^4.0.0-alpha.12",
+    "@nuxtjs/composition-api": "^0.17.0",
+    "@vue/apollo-composable": "^4.0.0-alpha.10",
     "apollo-boost": "^0.4.9",
     "apollo-cache-inmemory": "^1.6.6",
     "apollo-client": "^2.6.10",

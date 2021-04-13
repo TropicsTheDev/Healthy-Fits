@@ -27,6 +27,7 @@
 
 <script>
 import { useRoute } from "@nuxtjs/composition-api";
+import { useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 
 const SINGLE_ITEM_QUERY = gql`
@@ -49,9 +50,19 @@ const SINGLE_ITEM_QUERY = gql`
 
 export default {
   setup() {
+    const {
+      value: {
+        params: { id },
+      },
+    } = useRoute();
+    const { result, loading, error } = useQuery(SINGLE_ITEM_QUERY);
+
     return {
-      SINGLE_ITEM_QUERY,
-      id: useRoute().value.params.id,
+      id,
+      result,
+      Product: result.value.Product,
+      loading,
+      error,
     };
   },
 };
