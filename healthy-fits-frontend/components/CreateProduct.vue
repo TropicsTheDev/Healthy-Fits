@@ -50,7 +50,6 @@
 
 <script>
 import { reactive, toRefs } from "@nuxtjs/composition-api";
-import { useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import { ALL_PRODUCTS_QUERY } from "./Products";
 

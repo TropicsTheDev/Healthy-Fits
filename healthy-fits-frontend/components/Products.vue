@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { useQuery } from "@vue/apollo-composable";
+import { useQuery } from "@vue/apollo-composable/dist";
 import gql from "graphql-tag";
 
 export const ALL_PRODUCTS_QUERY = gql`
