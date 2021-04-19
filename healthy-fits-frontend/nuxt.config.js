@@ -20,7 +20,7 @@ export default {
   plugins: [
     "~plugins/formatMoney.js",
     "~plugins/useForm.js",
-    "~plugins/provideApollo.js",
+    // "~plugins/provideApollo.js",
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -52,6 +52,6 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: ["@vue/apollo-composable"],
+    // transpile: ["@vue/apollo-composable"],
   },
 };

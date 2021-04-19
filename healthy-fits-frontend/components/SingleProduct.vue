@@ -6,14 +6,14 @@
   <p v-else-if="error">An error occurred</p>
 
   <!-- Result -->
-  <div v-else-if="result" class="product-styles">
+  <div v-else-if="data !== null" class="product-styles">
     <img
-      :src="Product.photo.image.publicUrlTransformed"
-      :alt="Product.photo.altText"
+      :src="data.Product.photo.image.publicUrlTransformed"
+      :alt="data.Product.photo.altText"
     />
     <div class="details">
-      <h2>{{ Product.name }}</h2>
-      <p>{{ Product.description }}</p>
+      <h2>{{ data.Product.name }}</h2>
+      <p>{{ data.Product.description }}</p>
     </div>
   </div>
 
@@ -22,41 +22,11 @@
 </template>
 
 <script>
-import { computed, useRoute } from "@nuxtjs/composition-api";
-import { useQuery } from "@vue/apollo-composable/dist";
-import gql from "graphql-tag";
-
-const SINGLE_ITEM_QUERY = gql`
-  query SINGLE_ITEM_QUERY($id: ID!) {
-    Product(where: { id: $id }) {
-      name
-      price
-      description
-      id
-      photo {
-        id
-        altText
-        image {
-          publicUrlTransformed
-        }
-      }
-    }
-  }
-`;
-
 export default {
-  setup() {
-    const route = useRoute();
-    const id = computed(() => route.vlaue.params.id);
-
-    const { result, loading, error } = useQuery(SINGLE_ITEM_QUERY, { id });
-
+  props: ["data", "error", "loading"],
+  head() {
     return {
-      id,
-      result,
-      Product: result.value.Product,
-      loading,
-      error,
+      title: this.data !== null ? this.data.Product.name : "A Single Item",
     };
   },
 };

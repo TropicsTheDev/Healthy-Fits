@@ -1,11 +1,37 @@
 <template>
-  <main class="wrapper"><Products /></main>
+  <apollo-query :query="(gql) => ALL_PRODUCTS_QUERY">
+    <template #default="{ result: { data, loading, error } }">
+      <main class="wrapper">
+        <Products :data="data" :loading="loading" :error="error" />
+      </main>
+    </template>
+  </apollo-query>
 </template>
 
 <script>
+import gql from "graphql-tag";
+
+export const ALL_PRODUCTS_QUERY = gql`
+  query ALL_PRODUCTS_QUERY {
+    allProducts {
+      id
+      name
+      price
+      description
+      photo {
+        id
+        image {
+          publicUrlTransformed
+        }
+      }
+    }
+  }
+`;
 export default {
-  setup() {
-    return {};
+  data() {
+    return {
+      ALL_PRODUCTS_QUERY,
+    };
   },
 };
 </script>

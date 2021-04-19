@@ -16,9 +16,6 @@ export default {
       default: () => {},
     },
   },
-  setup() {
-    return {};
-  },
 };
 </script>
 

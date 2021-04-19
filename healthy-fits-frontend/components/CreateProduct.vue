@@ -49,75 +49,30 @@
 </template>
 
 <script>
-import { reactive, toRefs } from "@nuxtjs/composition-api";
-import gql from "graphql-tag";
-import { ALL_PRODUCTS_QUERY } from "./Products";
-
-const CREATE_PRODUCT_MUTATION = gql`
-  mutation CREATE_PRODUCT_MUTATION(
-    # Which variables are getting passed in? And What types are they
-    $name: String!
-    $description: String!
-    $price: Int!
-    $image: Upload
-  ) {
-    createProduct(
-      data: {
-        name: $name
-        description: $description
-        price: $price
-        status: "AVAILABLE"
-        photo: { create: { image: $image, altText: $name } }
-      }
-    ) {
-      id
-      price
-      description
-      name
-    }
-  }
-`;
 export default {
-  setup() {
-    const state = reactive({
+  props: ["createProduct", "loading", "error"],
+  data() {
+    return {
       image: "",
       name: "Nice Shoes",
       price: 34234,
       description: "These are the best shoes!",
-    });
-
-    const { createProduct, loading, error } = useMutation(
-      CREATE_PRODUCT_MUTATION,
-      () => ({
-        variables: {
-          ...state,
-        },
-        refetchQueries: () => [{ query: ALL_PRODUCTS_QUERY }],
-      })
-    );
-
-    function handleImage(event) {
-      const { value } = event.target;
-      state.image = value;
-    }
-
-    async function handleSubmit(event) {
+    };
+  },
+  methods: {
+    async handleSubmit(event) {
       event.preventDefault();
-      const { resetForm } = this.$useForm(state);
-      const res = await createProduct();
+      const { resetForm } = this.$useForm(this.$data);
+      const res = await this.createProduct({ variables: { ...this.$data } });
       resetForm();
       this.$router.push({
         path: `/product/${res.data.createProduct.id}`,
       });
-    }
-
-    return {
-      loading,
-      error,
-      ...toRefs(state),
-      handleImage,
-      handleSubmit,
-    };
+    },
+    handleImage(event) {
+      const { value } = event.target;
+      this.image = value;
+    },
   },
 };
 </script>

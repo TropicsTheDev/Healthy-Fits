@@ -4,11 +4,7 @@
 
 <script>
 //  import { ref } from "@nuxtjs/composition-api";
-export default {
-  setup() {
-    return {};
-  },
-};
+export default {};
 </script>
 
 <style scoped></style>
