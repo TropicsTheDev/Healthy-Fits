@@ -1,5 +1,5 @@
 <template>
-  <form @submit="handleSubmit(createProduct, $event)">
+  <form @submit="handleSubmit($event)">
     <!-- TODO: Make actual display error component -->
     <div class="display-error">{{ error }}</div>
     <fieldset :disabled="loading" :aria-busy="loading">
@@ -60,17 +60,16 @@ export default {
     };
   },
   methods: {
-    async handleSubmit(event) {
+    handleSubmit(event) {
       event.preventDefault();
-      const { resetForm } = this.$useForm(this.$data);
-      const res = await this.createProduct({ variables: { ...this.$data } });
-      resetForm();
-      this.$router.push({
-        path: `/product/${res.data.createProduct.id}`,
+      const { image, name, price, description } = this.$data;
+      this.createProduct({
+        variables: { image, name, price: Number(price), description },
       });
+      event.target.reset();
     },
     handleImage(event) {
-      const { value } = event.target;
+      const [value] = event.target.files;
       this.image = value;
     },
   },
