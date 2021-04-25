@@ -2,7 +2,14 @@
   <apollo-query :query="(gql) => ALL_PRODUCTS_QUERY">
     <template #default="{ result: { data, loading, error } }">
       <main class="wrapper">
-        <Products :data="data" :loading="loading" :error="error" />
+        <Pagination :page="$route.query.page || 1" />
+        <Products
+          :data="data"
+          :loading="loading"
+          :error="error"
+          :page="$route.query.page || 1"
+        />
+        <Pagination :page="$route.query.page || 1" />
       </main>
     </template>
   </apollo-query>

@@ -5,6 +5,10 @@
       <nuxt-link :to="`/products/${product.id}`">{{ product.name }}</nuxt-link>
     </h3>
     <span class="price-tag">{{ product.price | formatMoney }}</span>
+    <p>{{ product.description }}</p>
+    <div class="button-list">
+      <nuxt-link :to="`/update?productId=${product.id}`">Edit</nuxt-link>
+    </div>
   </div>
 </template>
 
