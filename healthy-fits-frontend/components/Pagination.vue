@@ -1,8 +1,21 @@
 <template>
   <div>
-    Pagination
-    <nuxt-link to="/">Prev</nuxt-link>
-    <nuxt-link to="/">Next</nuxt-link>
+    <nuxt-link
+      :to="`/products?page=${page - 1}`"
+      role="button"
+      :aria-disabled="onFirstPage"
+      :class="{ disabled: onFirstPage }"
+      >Prev</nuxt-link
+    >
+    <p>Page {{ page }} of {{ pageCount }}</p>
+    <p>{{ count }} Items Total</p>
+    <nuxt-link
+      :to="`/products?page=${page + 1}`"
+      role="button"
+      :aria-disabled="onLastPage"
+      :class="{ disabled: onLastPage }"
+      >Next</nuxt-link
+    >
   </div>
 </template>
 
@@ -34,6 +47,12 @@ export default {
     pageCount() {
       return Math.ceil(this.count / perPage);
     },
+    onFirstPage() {
+      return this.page <= 1;
+    },
+    onLastPage() {
+      return this.page >= this.pageCount;
+    },
   },
   apollo: {
     _allProductsMeta: {
@@ -46,4 +65,13 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+/* aria-disabled wasn't working with Nuxt-Links */
+.disabled {
+  color: currentColor;
+  cursor: not-allowed;
+  opacity: 0.5;
+  text-decoration: none;
+  pointer-events: none;
+}
+</style>

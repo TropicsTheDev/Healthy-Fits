@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -17,11 +18,7 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [
-    "~plugins/formatMoney.js",
-    "~plugins/useForm.js",
-    // "~plugins/provideApollo.js",
-  ],
+  plugins: ["~/plugins/formatMoney.js", "~/plugins/useForm.js"],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -44,9 +41,7 @@ export default {
 
   apollo: {
     clientConfigs: {
-      default: {
-        httpEndpoint: "http://localhost:3000/api/graphql",
-      },
+      default: "~/plugins/apolloConfig.js",
     },
   },
 

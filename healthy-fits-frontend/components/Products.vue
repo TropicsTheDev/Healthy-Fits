@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  props: ["data", "error", "loading"],
+  props: ["page", "data", "error", "loading"],
 };
 </script>
 
