@@ -1,13 +1,14 @@
 <template>
   <apollo-mutation
-    :mutation="(gql) => CREATE_PRODUCT_MUTATION"
+    :mutation="(gql) => UPDATE_PRODUCT_MUTATION"
     :refetchQueries="() => [{ query: ALL_PRODUCTS_QUERY }]"
     @done="handleResult"
   >
     <template #default="{ mutate, loading, error }">
       <main class="wrapper">
-        <CreateProduct
-          :createProduct="mutate"
+        <UpdateProduct
+          :updateProduct="mutate"
+          :product="product"
           :loading="loading"
           :error="error"
         />
@@ -19,22 +20,28 @@
 import gql from "graphql-tag";
 import { ALL_PRODUCTS_QUERY } from "./products/index";
 
-const CREATE_PRODUCT_MUTATION = gql`
+const SINGLE_ITEM_QUERY = gql`
+  query SINGLE_ITEM_QUERY($id: ID!) {
+    Product(where: { id: $id }) {
+      name
+      price
+      description
+      id
+    }
+  }
+`;
+
+const UPDATE_PRODUCT_MUTATION = gql`
   mutation CREATE_PRODUCT_MUTATION(
     # Which variables are getting passed in? And What types are they
+    $id: ID!
     $name: String!
     $description: String!
     $price: Int!
-    $image: Upload
   ) {
-    createProduct(
-      data: {
-        name: $name
-        description: $description
-        price: $price
-        status: "AVAILABLE"
-        photo: { create: { image: $image, altText: $name } }
-      }
+    updateProduct(
+      id: $id
+      data: { name: $name, description: $description, price: $price }
     ) {
       id
       price
@@ -46,15 +53,25 @@ const CREATE_PRODUCT_MUTATION = gql`
 export default {
   data() {
     return {
-      CREATE_PRODUCT_MUTATION,
+      UPDATE_PRODUCT_MUTATION,
       ALL_PRODUCTS_QUERY,
     };
+  },
+  apollo: {
+    product() {
+      return {
+        query: SINGLE_ITEM_QUERY,
+        variables: {
+          id: this.$route.query.productId,
+        },
+      };
+    },
   },
   methods: {
     handleResult(result) {
       // This function is needed because the mutate() was not returning a promise
       this.$router.push({
-        path: `/products/${result.data.createProduct.id}`,
+        path: `/products/${result.data.updateProduct.id}`,
       });
     },
   },

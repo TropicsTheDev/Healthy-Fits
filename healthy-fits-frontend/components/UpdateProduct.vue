@@ -4,16 +4,6 @@
     <div class="display-error">{{ error }}</div>
     <fieldset :disabled="loading" :aria-busy="loading">
       <label>
-        Image
-        <input
-          id="image"
-          required
-          type="file"
-          name="image"
-          @change="handleImage($event)"
-        />
-      </label>
-      <label>
         Name
         <input
           id="name"
@@ -43,28 +33,30 @@
         />
       </label>
 
-      <button type="submit">+ Add Product</button>
+      <button type="submit">Update Product</button>
     </fieldset>
   </form>
 </template>
 
 <script>
 export default {
-  props: ["createProduct", "loading", "error"],
+  props: ["updateProduct", "product", "loading", "error"],
   data() {
     return {
-      image: "",
-      name: "Nice Shoes",
-      price: 34234,
-      description: "These are the best shoes!",
+      name: this.product.name,
+      price: this.product.price,
+      description: this.product.description,
     };
   },
   methods: {
     handleSubmit(event) {
       event.preventDefault();
-      const { image, name, price, description } = this.$data;
-      this.createProduct({
-        variables: { image, name, price: Number(price), description },
+      const { name, price, description } = this.$data;
+      this.updateProduct({
+        variables: {
+          id: this.product.id,
+          data: { name, price: Number(price), description },
+        },
       });
       event.target.reset();
     },
