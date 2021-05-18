@@ -18,7 +18,11 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ["~/plugins/formatMoney.js", "~/plugins/useForm.js"],
+  plugins: [
+    "~/plugins/formatMoney.js",
+    "~/plugins/useForm.js",
+    "~/plugins/User.js",
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -43,6 +47,8 @@ export default {
     clientConfigs: {
       default: "~/plugins/apolloConfig.js",
     },
+    authenticationType: "",
+    tokenName: "keystonejs-session",
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

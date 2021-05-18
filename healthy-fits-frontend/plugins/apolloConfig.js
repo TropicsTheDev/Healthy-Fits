@@ -4,6 +4,9 @@ import paginationField from "./paginationField";
 export default (context) => {
   return {
     httpEndpoint: "http://localhost:3000/api/graphql",
+    httpLinkOptions: {
+      credentials: "include",
+    },
     cache: new InMemoryCache({
       typePolicies: {
         Query: {
