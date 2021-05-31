@@ -21,7 +21,7 @@ export default {
   plugins: [
     "~/plugins/formatMoney.js",
     "~/plugins/useForm.js",
-    "~/plugins/User.js",
+    "~/plugins/calcTotalPrice.js",
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

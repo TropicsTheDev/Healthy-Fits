@@ -5,6 +5,10 @@
       <nuxt-link to="/sell">sell</nuxt-link>
       <nuxt-link to="/orders">orders</nuxt-link>
       <nuxt-link to="/account">account</nuxt-link>
+      <button type="button" @click="$store.commit('cart/openCart')">
+        View Cart
+        <CartCount :count="cartCount" />
+      </button>
       <SignOut />
     </template>
     <template v-else-if="user === null || user === undefined">
@@ -14,31 +18,17 @@
 </template>
 
 <script>
-import gql from "graphql-tag";
-export const CURRENT_USER_QUERY = gql`
-  query CURRENT_USER_QUERY {
-    authenticatedItem {
-      ... on User {
-        id
-        email
-        name
-      }
-    }
-  }
-`;
+import User from "~/plugins/User";
+
 export default {
   name: "Nav",
-  data() {
-    return {
-      user: null,
-    };
-  },
-  apollo: {
-    authenticatedItem: {
-      query: CURRENT_USER_QUERY,
-      result({ data }) {
-        this.user = data.authenticatedItem;
-      },
+  mixins: [User],
+  computed: {
+    cartCount() {
+      return this.user.cart.reduce(
+        (tally, cartItem) => tally + cartItem.quantity,
+        0
+      );
     },
   },
 };

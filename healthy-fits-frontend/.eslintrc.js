@@ -9,12 +9,14 @@ module.exports = {
   },
   extends: [
     "@nuxtjs",
+    "prettier",
     "plugin:prettier/recommended",
     "plugin:nuxt/recommended",
   ],
   plugins: [],
   // add your custom rules here
   rules: {
+    "vue/comment-directive": "off",
     "vue/attribute-hyphenation": [
       "error",
       "never",

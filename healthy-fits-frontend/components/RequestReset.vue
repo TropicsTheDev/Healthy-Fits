@@ -1,10 +1,9 @@
 <template>
   <form method="post" @submit="handleSubmit($event)">
-    <h2>Create A New Account</h2>
+    <h2>Request A Password Reset</h2>
     <fieldset>
-      <p v-if="createUser !== null && createUser !== undefined">
-        You have signed up with <strong>{{ createUser.email }}</strong
-        >. Please go ahead and Sign In
+      <p v-if="sendUserPasswordLink === null">
+        Success! Check your email for a link!
       </p>
       <label for="email">
         Email
@@ -17,42 +16,18 @@
           autocomplete="email"
         />
       </label>
-      <label for="name">
-        Name
-        <input
-          id="name"
-          v-model="name"
-          type="text"
-          name="name"
-          placeholder="Your name"
-          autocomplete="name"
-        />
-      </label>
-      <label for="password">
-        Password
-        <input
-          id="password"
-          v-model="password"
-          type="password"
-          placeholder="Your Password"
-        />
-        <button type="submit">Sign Up</button>
-      </label>
+      <button type="submit">Request Reset</button>
     </fieldset>
   </form>
 </template>
 
 <script>
 import gql from "graphql-tag";
-import { CURRENT_USER_QUERY } from "~/plugins/User";
+import { CURRENT_USER_QUERY } from "../plugins/User";
 
-const SIGNUP_MUTATION = gql`
-  mutation SIGNUP_MUTATION(
-    $email: String!
-    $name: String!
-    $password: String!
-  ) {
-    createUser(data: { email: $email, name: $name, password: $password }) {
+const REQUEST_RESET_MUTATION = gql`
+  mutation REQUEST_RESET_MUTATION($email: String!) {
+    sendUserPasswordResetLink(email: $email) {
       id
       email
       name
@@ -64,9 +39,7 @@ export default {
   data() {
     return {
       email: "",
-      name: "",
-      password: "",
-      createUser: null,
+      sendUserPasswordLink: undefined, // would use null for initialization but null means it was sent successfuly in this case
       loading: false,
       error: "",
     };
@@ -76,11 +49,9 @@ export default {
       event.preventDefault();
       try {
         const res = await this.$apollo.mutate({
-          mutation: SIGNUP_MUTATION,
+          mutation: REQUEST_RESET_MUTATION,
           variables: {
             email: this.email,
-            name: this.name,
-            password: this.password,
           },
           result({ loading, error }) {
             this.loading = loading;
@@ -89,7 +60,7 @@ export default {
           refetchQueries: [{ query: CURRENT_USER_QUERY }],
         });
         console.log(res);
-        this.createUser = res.data.createUser;
+        this.sendUserPasswordLink = res.data.sendUserPasswordLink;
         // const error =
         //   data?.authenticateUserWithPassword.__typename ===
         //   "UserAuthenticationWithPasswordFailure"

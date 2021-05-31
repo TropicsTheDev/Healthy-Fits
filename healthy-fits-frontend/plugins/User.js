@@ -7,20 +7,39 @@ export const CURRENT_USER_QUERY = gql`
         id
         email
         name
+        cart {
+          id
+          quantity
+          product {
+            id
+            price
+            name
+            description
+            photo {
+              image {
+                publicUrlTransformed
+              }
+            }
+          }
+        }
       }
     }
   }
 `;
-
-export default ({ app }, inject) => {
-  const {
-    apolloProvider: {
-      defaultClient: { query },
+const useUser = {
+  data() {
+    return {
+      user: null,
+    };
+  },
+  apollo: {
+    authenticatedItem: {
+      query: CURRENT_USER_QUERY,
+      result({ data }) {
+        this.user = data?.authenticatedItem;
+      },
     },
-  } = app;
-  inject("useUser", async () => {
-    const { data } = await query({ query: CURRENT_USER_QUERY });
-    console.log({ data });
-    return data?.authenticatedItem;
-  });
+  },
 };
+
+export default useUser;

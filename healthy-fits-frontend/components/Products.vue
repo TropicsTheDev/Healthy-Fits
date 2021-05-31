@@ -24,4 +24,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(25%, 1fr));
+}
+</style>

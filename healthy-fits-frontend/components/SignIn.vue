@@ -22,7 +22,7 @@
 
 <script>
 import gql from "graphql-tag";
-import { CURRENT_USER_QUERY } from "./Nav";
+import { CURRENT_USER_QUERY } from "~/plugins/User";
 
 const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($email: String!, $password: String!) {
@@ -79,10 +79,9 @@ export default {
           data.authenticateUserWithPassword.sessionToken
         );
         await this.$apollo.query({ query: CURRENT_USER_QUERY });
-
         event.target.reset();
       } catch (error) {
-        console.warn(error);
+        console.error(error);
       }
     },
   },

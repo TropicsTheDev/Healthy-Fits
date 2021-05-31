@@ -1,10 +1,9 @@
 <template>
   <form method="post" @submit="handleSubmit($event)">
-    <h2>Create A New Account</h2>
+    <h2>Reset your password</h2>
     <fieldset>
-      <p v-if="createUser !== null && createUser !== undefined">
-        You have signed up with <strong>{{ createUser.email }}</strong
-        >. Please go ahead and Sign In
+      <p v-if="redeemUserPasswordResetToken === null">
+        Success! Check your email for a link!
       </p>
       <label for="email">
         Email
@@ -17,17 +16,6 @@
           autocomplete="email"
         />
       </label>
-      <label for="name">
-        Name
-        <input
-          id="name"
-          v-model="name"
-          type="text"
-          name="name"
-          placeholder="Your name"
-          autocomplete="name"
-        />
-      </label>
       <label for="password">
         Password
         <input
@@ -36,39 +24,42 @@
           type="password"
           placeholder="Your Password"
         />
-        <button type="submit">Sign Up</button>
       </label>
+      <button type="submit">Request Reset</button>
     </fieldset>
   </form>
 </template>
 
 <script>
 import gql from "graphql-tag";
-import { CURRENT_USER_QUERY } from "~/plugins/User";
+import { CURRENT_USER_QUERY } from "../plugins/User";
 
-const SIGNUP_MUTATION = gql`
-  mutation SIGNUP_MUTATION(
+const RESET_MUTATION = gql`
+  mutation RESET_MUTATION(
     $email: String!
-    $name: String!
     $password: String!
+    $token: String!
   ) {
-    createUser(data: { email: $email, name: $name, password: $password }) {
-      id
-      email
-      name
+    redeemUserPasswordResetToken(
+      email: $email
+      password: $password
+      token: $token
+    ) {
+      code
+      message
     }
   }
 `;
 
 export default {
+  props: ["token"],
   data() {
     return {
       email: "",
-      name: "",
       password: "",
-      createUser: null,
+      redeemUserPasswordResetToken: undefined, // would use null for initialization but null means it was sent successfuly in this case
       loading: false,
-      error: "",
+      error: undefined,
     };
   },
   methods: {
@@ -76,11 +67,11 @@ export default {
       event.preventDefault();
       try {
         const res = await this.$apollo.mutate({
-          mutation: SIGNUP_MUTATION,
+          mutation: RESET_MUTATION,
           variables: {
             email: this.email,
-            name: this.name,
             password: this.password,
+            token: this.token,
           },
           result({ loading, error }) {
             this.loading = loading;
@@ -89,13 +80,11 @@ export default {
           refetchQueries: [{ query: CURRENT_USER_QUERY }],
         });
         console.log(res);
-        this.createUser = res.data.createUser;
-        // const error =
-        //   data?.authenticateUserWithPassword.__typename ===
-        //   "UserAuthenticationWithPasswordFailure"
-        //     ? data?.authenticateUserWithPassword
-        //     : undefined;
-        // this.error = error;
+        this.redeemUserPasswordResetToken =
+          res.data.redeemUserPasswordResetToken;
+        this.error = res.data?.redeemUserPasswordResetToken?.code
+          ? res.data?.redeemUserPasswordResetToken
+          : undefined;
         event.target.reset();
       } catch (error) {
         console.error(error);

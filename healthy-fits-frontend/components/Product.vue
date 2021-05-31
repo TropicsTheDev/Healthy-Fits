@@ -8,6 +8,8 @@
     <p>{{ product.description }}</p>
     <div class="button-list">
       <nuxt-link :to="`/update?productId=${product.id}`">Edit</nuxt-link>
+      <AddToCartButton :id="product.id" />
+      <DeleteProduct :id="product.id">Delete</DeleteProduct>
     </div>
   </div>
 </template>
