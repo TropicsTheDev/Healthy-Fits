@@ -12,7 +12,7 @@
 <script>
 import gql from "graphql-tag";
 const REMOVE_FROM_CART_MUTATION = gql`
-  REMOVE_FROM_CART_MUTATION($id: id) {
+  mutation REMOVE_FROM_CART_MUTATION($id: id) {
     deleteCartItem(id: $id) {
       id
     }

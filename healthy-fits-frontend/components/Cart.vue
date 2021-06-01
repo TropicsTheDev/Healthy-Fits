@@ -55,7 +55,7 @@ const CartItem = {
             </em>
           </p>
         </div>
-        <RemoveFromCartButton />
+        <RemoveFromCartButton id={this.cartItem.id} />
       </li>
     );
   },

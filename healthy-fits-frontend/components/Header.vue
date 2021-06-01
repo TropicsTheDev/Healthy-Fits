@@ -7,7 +7,7 @@
       <Nav />
     </div>
     <div class="sub-bar wrapper">
-      <p>Search</p>
+      <Search />
     </div>
     <Cart :open="true" />
   </header>
