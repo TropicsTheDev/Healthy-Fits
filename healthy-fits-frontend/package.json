@@ -13,6 +13,7 @@
   "dependencies": {
     "@nuxtjs/apollo": "^4.0.1-rc.5",
     "@nuxtjs/composition-api": "^0.22.4",
+    "@vue-stripe/vue-stripe": "^4.2.4",
     "@vue/apollo-composable": "^4.0.0-alpha.12",
     "animejs": "^3.2.1",
     "apollo-boost": "^0.4.9",

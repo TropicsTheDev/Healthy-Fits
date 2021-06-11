@@ -1,19 +1,21 @@
 <template>
-  <apollo-mutation
-    :mutation="(gql) => CREATE_PRODUCT_MUTATION"
-    :refetchQueries="() => [{ query: ALL_PRODUCTS_QUERY }]"
-    @done="handleResult"
-  >
-    <template #default="{ mutate, loading, error }">
-      <main class="wrapper">
-        <CreateProduct
-          :createProduct="mutate"
-          :loading="loading"
-          :error="error"
-        />
-      </main>
-    </template>
-  </apollo-mutation>
+  <PleaseSignIn>
+    <ApolloMutation
+      :mutation="(gql) => CREATE_PRODUCT_MUTATION"
+      :refetchQueries="() => [{ query: ALL_PRODUCTS_QUERY }]"
+      @done="handleResult"
+    >
+      <template #default="{ mutate, loading, error }">
+        <main class="wrapper">
+          <CreateProduct
+            :createProduct="mutate"
+            :loading="loading"
+            :error="error"
+          />
+        </main>
+      </template>
+    </ApolloMutation>
+  </PleaseSignIn>
 </template>
 <script>
 import gql from "graphql-tag";

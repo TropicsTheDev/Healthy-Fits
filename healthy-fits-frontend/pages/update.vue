@@ -1,5 +1,5 @@
 <template>
-  <apollo-mutation
+  <ApolloMutation
     :mutation="(gql) => UPDATE_PRODUCT_MUTATION"
     :refetchQueries="() => [{ query: ALL_PRODUCTS_QUERY }]"
     @done="handleResult"
@@ -14,7 +14,7 @@
         />
       </main>
     </template>
-  </apollo-mutation>
+  </ApolloMutation>
 </template>
 <script>
 import gql from "graphql-tag";

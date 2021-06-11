@@ -17,6 +17,7 @@
         </ul>
         <footer>
           <p>{{ $calcTotalPrice(user.cart) | formatMoney }}</p>
+          <Checkout />
         </footer>
       </div>
     </template>
@@ -65,14 +66,10 @@ export default {
     CartItem,
   },
   mixins: [User],
-
   computed: {
     cartOpen() {
       return this.$store.state.cart.cartOpen;
     },
-  },
-  mounted() {
-    console.log(this.$store);
   },
 };
 </script>

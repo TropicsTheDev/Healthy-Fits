@@ -1,5 +1,5 @@
 <template>
-  <apollo-query
+  <ApolloQuery
     :query="(gql) => ALL_PRODUCTS_QUERY"
     :variables="{ skip: page * perPage - perPage, first: perPage }"
   >
@@ -10,7 +10,7 @@
         <Pagination :page="page || 1" />
       </main>
     </template>
-  </apollo-query>
+  </ApolloQuery>
 </template>
 
 <script>

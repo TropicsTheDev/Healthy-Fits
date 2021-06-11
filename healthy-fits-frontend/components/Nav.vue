@@ -26,7 +26,7 @@ export default {
   computed: {
     cartCount() {
       return this.user.cart.reduce(
-        (tally, cartItem) => tally + cartItem.quantity,
+        (tally, cartItem) => tally + (cartItem.product ? cartItem.quantity : 0),
         0
       );
     },

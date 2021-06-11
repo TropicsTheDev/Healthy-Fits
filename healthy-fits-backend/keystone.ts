@@ -5,6 +5,9 @@ import { User } from "./schema/User";
 import { Product } from "./schema/Product";
 import { ProductImage } from "./schema/ProductImage";
 import { CartItem } from "./schema/CartItem";
+import { Order } from "./schema/Order";
+import { OrderItem } from "./schema/OrderItem";
+import { Role } from "./schema/Role";
 import { extendGraphqlSchema } from "./mutations/index";
 import {
   withItemData,
@@ -12,6 +15,7 @@ import {
 } from "@keystone-next/keystone/session";
 import { insertSeedData } from "./seed-data";
 import { sendPasswordResetEmail } from "./utils/mail";
+import { permissionsList } from "./schema/fields";
 
 const databaseURL =
   process.env.DATABASE_URL || "mongodbL//localhost/keystone-sick-fits-tutorial";
@@ -60,6 +64,9 @@ export default withAuth(
       Product,
       ProductImage,
       CartItem,
+      Order,
+      OrderItem,
+      Role,
     }),
     extendGraphqlSchema,
     ui: {
@@ -68,7 +75,7 @@ export default withAuth(
     },
     // TODO Add session values here
     session: withItemData(statelessSessions(sessionConfig), {
-      User: "id",
+      User: `id name email role { ${permissionsList.join(" ")} }`,
     }),
   })
 );

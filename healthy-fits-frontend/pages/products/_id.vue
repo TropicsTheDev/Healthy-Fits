@@ -1,11 +1,11 @@
 <template>
-  <apollo-query :query="(gql) => SINGLE_ITEM_QUERY" Í :variables="{ id }">
+  <ApolloQuery :query="(gql) => SINGLE_ITEM_QUERY" Í :variables="{ id }">
     <template #default="{ result: { data, loading, error } }">
       <main class="wrapper">
         <SingleProduct :data="data" :loading="loading" :error="error" />
       </main>
     </template>
-  </apollo-query>
+  </ApolloQuery>
 </template>
 
 <script>
